@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { getUser } from './api/api';
 import './App.css';
 
@@ -20,10 +20,13 @@ function App() {
     }
   }
 
-  const removeUser = (user) => {
-    let arr = data.filter(value => value !== user);
-    setData(arr);
-  }
+  const removeUser = (index) => {
+    setData((prevData) => prevData.filter((_, i) => i !== index));
+  };
+
+  useEffect(() => {
+
+  }, [data])
   
   return (
     <div className="App">
@@ -32,10 +35,21 @@ function App() {
         <div style={{display: 'flex', textAlign: 'center',  height: '80px'}}>
           Name
         </div>    
-        {data.map(value => (
-          <div key={value} style={{display: 'flex', flexDirection: 'row', textAlign: 'center', justifyContent: 'space-between', height: '80px', border: '1px solid black'}}>
-            {value}
-            <button onClick={() => removeUser(value)}>Delete</button>
+        {data.map((name, index) => (
+          <div
+            key={`${name}-${index}`}
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              padding: '10px',
+              textAlign: 'center',
+              justifyContent: 'space-between',
+              height: '80px',
+              border: '1px solid black',
+            }}
+          >
+            {name}
+            <button onClick={() => removeUser(index)}>Delete</button>
           </div>
         ))}
       </div>
